@@ -59,6 +59,13 @@ function webflowPagination(options) {
       }
     }
 
+    // 前のページ部分に戻るリンクを追加
+    if (startPage > 1) {
+      paginationHtml += `<a href="#" class="pagination-ellipsis-back" data-start-page="${startPage - 4}">...</a>`;
+      paginationHtml += `<a href="?page=1" class="pagination-count">1</a>`;
+    }
+
+    // 次のページ部分に進むリンクを追加
     if (totalPages > startPage + 3) {
       paginationHtml += `<a href="#" class="pagination-ellipsis" data-start-page="${startPage + 4}">...</a>`;
       paginationHtml += `<a href="?page=${totalPages}" class="pagination-count">${totalPages}</a>`;
@@ -83,6 +90,13 @@ function webflowPagination(options) {
   // クリックイベントを追加
   paginationContainer.addEventListener('click', (event) => {
     if (event.target.classList.contains('pagination-ellipsis')) {
+      event.preventDefault();
+      const startPage = parseInt(event.target.getAttribute('data-start-page'));
+      paginationHtml = createPagination(totalPages, parseInt(currentPage), startPage);
+      paginationContainer.innerHTML = paginationHtml;
+    }
+    // 前のページ部分に戻るリンクのクリックイベント
+    if (event.target.classList.contains('pagination-ellipsis-back')) {
       event.preventDefault();
       const startPage = parseInt(event.target.getAttribute('data-start-page'));
       paginationHtml = createPagination(totalPages, parseInt(currentPage), startPage);
