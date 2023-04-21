@@ -10,3 +10,6 @@ class Pagination {
     return items.slice(start, end);
   }
 }
+
+const test = "test";
+console.log(test);
