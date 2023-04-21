@@ -16,7 +16,7 @@ function webflowPagination(options) {
   const contentContainer = document.querySelector(settings.contentContainerSelector);
 
   // コンテンツを指定されたタグで分割する関数
-  function splitContentByTag(tag = settings.splitTag) {
+  function splitContentByTag(tag) {
     const contentParts = [];
     let tempContainer = document.createElement('div');
 
@@ -36,7 +36,7 @@ function webflowPagination(options) {
   }
 
   // 分割されたコンテンツを取得
-  const contentParts = splitContentByTag();
+  const contentParts = splitContentByTag(settings.splitTag);
 
   // 分割されたコンテンツを表示
   contentContainer.innerHTML = contentParts[currentPage - 1] || '';
