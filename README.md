@@ -2,6 +2,7 @@
 Webflowでリッチテキストページネーションを追加するライブラリです
 
 ページネーション設定
+```
 <script>
   webflowPagination({
     splitTag: 'h4', // ここで分割タグを指定
@@ -9,3 +10,4 @@ Webflowでリッチテキストページネーションを追加するライブ�
     paginationContainerSelector: '.custom-pagination-container', // ここでページネーションコンテナのクラスを指定
   });
 </script>
+```
