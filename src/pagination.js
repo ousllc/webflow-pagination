@@ -1,4 +1,4 @@
-export default function webflowPagination(options) {
+export function webflowPagination(options) {
   // デフォルト設定
   const defaultOptions = {
     splitTag: 'h3',
@@ -43,7 +43,7 @@ export default function webflowPagination(options) {
     contentContainer.innerHTML = contentParts[currentPage - 1] || '';
 
     // ページネーション機能を実装
-    function createPagination(totalPages, currentPage, startPage = 1) {
+    function createPagination(totalPages, currentPage) {
       let paginationHtml = '';
 
       // 前へのリンクを追加
@@ -52,7 +52,9 @@ export default function webflowPagination(options) {
       }
 
       // ページ番号のリンクを追加
-      for (let i = startPage; i < startPage + 4; i++) {
+      const startPage = Math.max(1, currentPage - 2);
+      const maxPage = Math.min(totalPages, startPage + 3);
+      for (let i = startPage; i <= maxPage; i++) {
         if (i === parseInt(currentPage)) {
           paginationHtml += `<span class="pagination-count active">${i}</span>`;
         } else {
@@ -62,13 +64,13 @@ export default function webflowPagination(options) {
 
       // 前のページ部分に戻るリンクを追加
       if (startPage > 1) {
-        paginationHtml += `<a href="#" class="pagination-ellipsis-back" data-start-page="${startPage - 4}">...</a>`;
         paginationHtml += `<a href="?page=1" class="pagination-count">1</a>`;
+        paginationHtml += `<a href="?page=${startPage - 1}" class="pagination-ellipsis-back" data-start-page="${startPage - 4}">...</a>`;
       }
 
       // 次のページ部分に進むリンクを追加
-      if (totalPages > startPage + 3) {
-        paginationHtml += `<a href="#" class="pagination-ellipsis" data-start-page="${startPage + 4}">...</a>`;
+      if (totalPages > maxPage) {
+        paginationHtml += `<a href="?page=${maxPage + 1}" class="pagination-ellipsis" data-start-page="${startPage + 4}">...</a>`;
         paginationHtml += `<a href="?page=${totalPages}" class="pagination-count">${totalPages}</a>`;
       }
 
