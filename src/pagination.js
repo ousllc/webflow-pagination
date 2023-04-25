@@ -1,4 +1,4 @@
-function webflowPagination(options) {
+export function webflowPagination(options) {
   // デフォルト設定
   const defaultOptions = {
     splitTag: 'h3',
@@ -104,4 +104,3 @@ function webflowPagination(options) {
     }
   });
 }
-export default webflowPagination;
