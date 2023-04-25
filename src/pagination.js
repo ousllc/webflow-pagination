@@ -104,3 +104,4 @@ function webflowPagination(options) {
     }
   });
 }
+export default webflowPagination;
