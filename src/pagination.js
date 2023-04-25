@@ -55,7 +55,7 @@ function webflowPagination(options) {
 
         // 前へのリンクを追加
         if (currentPage > 1) {
-          paginationHtml += `<a href="?page=${currentPage - 1}" class="${settings.prevLinkClass}">${settings.prevText}</a>`;
+          paginationHtml += `<a href="?page=${currentPage - 1}" class="${settings.prevLinkClass}"><span class="${settings.countLinkTextClass}">${settings.prevText}</span></a>`;
         }
 
         // ページ番号のリンクを追加
@@ -69,7 +69,7 @@ function webflowPagination(options) {
 
         // 次へのリンクを追加
         if (currentPage < totalPages) {
-          paginationHtml += `<a href="?page=${currentPage + 1}" class="${settings.nextLinkClass}">${settings.nextText}</a>`;
+          paginationHtml += `<a href="?page=${currentPage + 1}" class="${settings.nextLinkClass}"><span class="${settings.countLinkTextClass}">${settings.nextText}</span></a>`;
         }
 
         return paginationHtml;
