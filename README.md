@@ -1,5 +1,8 @@
 # webflow-pagination
 Webflowでリッチテキストページネーションを追加するライブラリです
+```
+<script src="https://cdn.jsdelivr.net/gh/ousllc/webflow-pagination@latest/dist/pagination.min.js"></script>
+```
 
 ページネーション設定
 ```
