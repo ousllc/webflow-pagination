@@ -10,7 +10,8 @@ function webflowPagination(options) {
       countLinkTextClass: 'pagination-count-text',
       nextLinkClass: 'pagination-next',
       prevText: '前へ',
-      nextText: '次へ'
+      nextText: '次へ',
+      currentPageLinkClass: 'active'
     };
 
     // オプションをマージ
@@ -61,7 +62,7 @@ function webflowPagination(options) {
         // ページ番号のリンクを追加
         for (let i = 1; i <= totalPages; i++) {
           if (i === parseInt(currentPage)) {
-            paginationHtml += `<p class="${settings.countLinkClass} active"><span class="${settings.countLinkTextClass}">${i}</span></p>`;
+            paginationHtml += `<p class="${settings.countLinkClass} ${settings.currentPageLinkClass}"><span class="${settings.countLinkTextClass}">${i}</span></p>`;
           } else {
             paginationHtml += `<a href="?page=${i}" class="${settings.countLinkClass}"><span class="${settings.countLinkTextClass}">${i}<span></a>`;
           }
