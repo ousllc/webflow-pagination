@@ -52,26 +52,12 @@ export function webflowPagination(options) {
       }
 
       // ページ番号のリンクを追加
-      const startPage = Math.max(1, currentPage - 2);
-      const maxPage = Math.min(totalPages, startPage + 3);
-      for (let i = startPage; i <= maxPage; i++) {
+      for (let i = 1; i <= totalPages; i++) {
         if (i === parseInt(currentPage)) {
           paginationHtml += `<span class="pagination-count active">${i}</span>`;
         } else {
           paginationHtml += `<a href="?page=${i}" class="pagination-count">${i}</a>`;
         }
-      }
-
-      // 前のページ部分に戻るリンクを追加
-      if (startPage > 1) {
-        paginationHtml += `<a href="?page=1" class="pagination-count">1</a>`;
-        paginationHtml += `<a href="?page=${startPage - 1}" class="pagination-ellipsis-back" data-start-page="${startPage - 4}">...</a>`;
-      }
-
-      // 次のページ部分に進むリンクを追加
-      if (totalPages > maxPage) {
-        paginationHtml += `<a href="?page=${maxPage + 1}" class="pagination-ellipsis" data-start-page="${startPage + 4}">...</a>`;
-        paginationHtml += `<a href="?page=${totalPages}" class="pagination-count">${totalPages}</a>`;
       }
 
       // 次へのリンクを追加
