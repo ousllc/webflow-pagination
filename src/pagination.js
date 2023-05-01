@@ -35,21 +35,21 @@ function webflowPagination(options) {
           const [parentTag, childTag] = tag.split(' ');
           const parentElements = contentContainer.querySelectorAll(parentTag);
 
-          parentElements.forEach((parentElement, index) => {
+          parentElements.forEach((parentElement) => {
             const childElement = parentElement.querySelector(childTag);
             if (childElement) {
               if (tempContainer.children.length) {
                 contentParts.push(tempContainer.innerHTML);
                 tempContainer = document.createElement('div');
               }
+              parentElement.removeChild(childElement);
               tempContainer.appendChild(parentElement.cloneNode(true));
-            }
-            if (index === parentElements.length - 1 && tempContainer.children.length) {
               contentParts.push(tempContainer.innerHTML);
+              tempContainer = document.createElement('div');
             }
           });
         } else {
-          Array.from(contentContainer.children).forEach((child, index) => {
+          Array.from(contentContainer.children).forEach((child) => {
             if (child.tagName.toLowerCase() === tag) {
               if (tempContainer.children.length) {
                 contentParts.push(tempContainer.innerHTML);
@@ -57,10 +57,8 @@ function webflowPagination(options) {
               }
             }
             tempContainer.appendChild(child.cloneNode(true));
-            if (index === contentContainer.children.length - 1) {
-              contentParts.push(tempContainer.innerHTML);
-            }
           });
+          contentParts.push(tempContainer.innerHTML);
         }
 
         return contentParts;
