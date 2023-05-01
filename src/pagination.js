@@ -29,6 +29,7 @@ function webflowPagination(options) {
       // コンテンツを指定されたタグで分割する関数
       function splitContentByTag(tag, child) {
         const contentParts = [];
+        const originalContent = contentContainer.innerHTML;
         let tempContainer = document.createElement('div');
         let splitElements = [];
 
@@ -50,15 +51,18 @@ function webflowPagination(options) {
             contentParts.push(tempContainer.innerHTML);
             tempContainer = document.createElement('div');
           }
-          splitElement.remove();
           tempContainer.appendChild(splitElement.cloneNode(true));
           if (index === splitElements.length - 1) {
             contentParts.push(tempContainer.innerHTML);
           }
         });
 
+        // Restore the original content
+        contentContainer.innerHTML = originalContent;
+
         return contentParts;
       }
+
 
 
       // 分割されたコンテンツを取得
