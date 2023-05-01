@@ -12,7 +12,8 @@ function webflowPagination(options) {
       prevText: '前へ',
       nextText: '次へ',
       currentPageLinkClass: 'active',
-      btnLinkTextClass: 'pagination-btn-text'
+      btnLinkTextClass: 'pagination-btn-text',
+      child: false
     };
 
     // オプションをマージ
@@ -26,27 +27,38 @@ function webflowPagination(options) {
 
     if (contentContainer) {
       // コンテンツを指定されたタグで分割する関数
-      function splitContentByTag(tag) {
+      function splitContentByTag(tag, child) {
         const contentParts = [];
         let tempContainer = document.createElement('div');
+        let splitElements = [];
 
-        Array.from(contentContainer.children).forEach((child) => {
-          if (child.tagName.toLowerCase() === tag) {
-            if (tempContainer.children.length) {
-              contentParts.push(tempContainer.innerHTML);
-              tempContainer = document.createElement('div');
+        if (child && tag.indexOf(' ') > -1 && tag.split(' ').length === 2 && tag.split(' ')[1]) {
+          const [parentTag, childTag] = tag.split(' ');
+          const parentElements = contentContainer.querySelectorAll(parentTag);
+          Array.from(parentElements).forEach((parentElement) => {
+            const childElements = parentElement.querySelectorAll(childTag);
+            if (childElements.length > 0) {
+              splitElements.push(parentElement);
             }
-          }
-          tempContainer.appendChild(child.cloneNode(true));
-        });
+          });
+        } else {
+          splitElements = contentContainer.querySelectorAll(tag);
+        }
 
+        Array.from(splitElements).forEach((splitElement) => {
+          if (tempContainer.children.length) {
+            contentParts.push(tempContainer.innerHTML);
+            tempContainer = document.createElement('div');
+          }
+          tempContainer.appendChild(splitElement.cloneNode(true));
+        });
         contentParts.push(tempContainer.innerHTML);
 
         return contentParts;
       }
 
       // 分割されたコンテンツを取得
-      const contentParts = splitContentByTag(settings.splitTag);
+      const contentParts = splitContentByTag(settings.splitTag, settings.child);
 
       // 分割されたコンテンツを表示
       contentContainer.innerHTML = contentParts[currentPage - 1] || '';
