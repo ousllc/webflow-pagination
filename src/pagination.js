@@ -5,15 +5,14 @@ function webflowPagination(options) {
       splitTag: 'h3',
       contentContainerSelector: '.rich-text-content',
       paginationContainerSelector: '.pagination-container',
-      prevLinkClass: '.pagination-prev',
-      countLinkClass: '.pagination-count',
-      countLinkTextClass: '.pagination-count-text',
-      nextLinkClass: '.pagination-next',
+      prevLinkClass: 'pagination-prev',
+      countLinkClass: 'pagination-count',
+      countLinkTextClass: 'pagination-count-text',
+      nextLinkClass: 'pagination-next',
       prevText: '前へ',
       nextText: '次へ',
-      currentPageLinkClass: '.active',
-      btnLinkTextClass: '.pagination-btn-text',
-      child: false
+      currentPageLinkClass: 'active',
+      btnLinkTextClass: 'pagination-btn-text'
     };
 
     // オプションをマージ
@@ -30,35 +29,21 @@ function webflowPagination(options) {
       function splitContentByTag(tag) {
         const contentParts = [];
         let tempContainer = document.createElement('div');
-        let splitElements = [];
 
-        if (tag.indexOf(' ') > -1 && tag.split(' ').length === 2 && tag.split(' ')[1]) {
-          const [parentTag, childTag] = tag.split(' ');
-          const parentElements = contentContainer.querySelectorAll(parentTag);
-          Array.from(parentElements).forEach((parentElement) => {
-            const childElements = parentElement.querySelectorAll(childTag);
-            if (childElements.length > 0) {
-              splitElements.push(parentElement);
-            }
-          });
-        } else {
-          splitElements = contentContainer.querySelectorAll(tag);
-        }
-
-        Array.from(splitElements).forEach((splitElement) => {
-          if (!settings.child || splitElement.parentElement === contentContainer) {
+        Array.from(contentContainer.children).forEach((child) => {
+          if (child.tagName.toLowerCase() === tag) {
             if (tempContainer.children.length) {
               contentParts.push(tempContainer.innerHTML);
               tempContainer = document.createElement('div');
             }
-            tempContainer.appendChild(splitElement.cloneNode(true));
           }
+          tempContainer.appendChild(child.cloneNode(true));
         });
+
         contentParts.push(tempContainer.innerHTML);
 
         return contentParts;
       }
-
 
       // 分割されたコンテンツを取得
       const contentParts = splitContentByTag(settings.splitTag);
