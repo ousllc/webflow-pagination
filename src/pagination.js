@@ -5,14 +5,14 @@ function webflowPagination(options) {
       splitTag: 'h3',
       contentContainerSelector: '.rich-text-content',
       paginationContainerSelector: '.pagination-container',
-      prevLinkClass: 'pagination-prev',
-      countLinkClass: 'pagination-count',
-      countLinkTextClass: 'pagination-count-text',
-      nextLinkClass: 'pagination-next',
+      prevLinkClass: '.pagination-prev',
+      countLinkClass: '.pagination-count',
+      countLinkTextClass: '.pagination-count-text',
+      nextLinkClass: '.pagination-next',
       prevText: '前へ',
       nextText: '次へ',
-      currentPageLinkClass: 'active',
-      btnLinkTextClass: 'pagination-btn-text',
+      currentPageLinkClass: '.active',
+      btnLinkTextClass: '.pagination-btn-text',
       child: false
     };
 
