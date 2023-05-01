@@ -29,40 +29,42 @@ function webflowPagination(options) {
       // コンテンツを指定されたタグで分割する関数
       function splitContentByTag(tag, child) {
         const contentParts = [];
-        const originalContent = contentContainer.innerHTML;
         let tempContainer = document.createElement('div');
-        let splitElements = [];
 
         if (child && tag.indexOf(' ') > -1 && tag.split(' ').length === 2 && tag.split(' ')[1]) {
           const [parentTag, childTag] = tag.split(' ');
           const parentElements = contentContainer.querySelectorAll(parentTag);
-          Array.from(parentElements).forEach((parentElement) => {
-            const childElements = parentElement.querySelectorAll(childTag);
-            if (childElements.length > 0) {
-              splitElements.push(...childElements);
+
+          parentElements.forEach((parentElement, index) => {
+            const childElement = parentElement.querySelector(childTag);
+            if (childElement) {
+              if (tempContainer.children.length) {
+                contentParts.push(tempContainer.innerHTML);
+                tempContainer = document.createElement('div');
+              }
+              tempContainer.appendChild(parentElement.cloneNode(true));
+            }
+            if (index === parentElements.length - 1 && tempContainer.children.length) {
+              contentParts.push(tempContainer.innerHTML);
             }
           });
         } else {
-          splitElements = contentContainer.querySelectorAll(tag);
+          Array.from(contentContainer.children).forEach((child, index) => {
+            if (child.tagName.toLowerCase() === tag) {
+              if (tempContainer.children.length) {
+                contentParts.push(tempContainer.innerHTML);
+                tempContainer = document.createElement('div');
+              }
+            }
+            tempContainer.appendChild(child.cloneNode(true));
+            if (index === contentContainer.children.length - 1) {
+              contentParts.push(tempContainer.innerHTML);
+            }
+          });
         }
-
-        splitElements.forEach((splitElement, index) => {
-          if (tempContainer.children.length) {
-            contentParts.push(tempContainer.innerHTML);
-            tempContainer = document.createElement('div');
-          }
-          tempContainer.appendChild(splitElement.cloneNode(true));
-          if (index === splitElements.length - 1) {
-            contentParts.push(tempContainer.innerHTML);
-          }
-        });
-
-        // Restore the original content
-        contentContainer.innerHTML = originalContent;
 
         return contentParts;
       }
-
 
 
       // 分割されたコンテンツを取得
