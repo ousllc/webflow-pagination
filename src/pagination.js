@@ -25,11 +25,6 @@ function webflowPagination(options) {
     // コンテンツコンテナを取得
     const contentContainer = document.querySelector(settings.contentContainerSelector);
 
-    if (!contentContainer) {
-      console.error(`Element matching "${settings.contentContainerSelector}" not found.`);
-      return;
-    }
-
     if (contentContainer) {
       // コンテンツを指定されたタグで分割する関数
       function splitContentByTag(tag) {
@@ -42,7 +37,7 @@ function webflowPagination(options) {
           const parentElements = contentContainer.querySelectorAll(parentTag);
           Array.from(parentElements).forEach((parentElement) => {
             const childElements = parentElement.querySelectorAll(childTag);
-            if (childElements.length > 0 && parentElement.classList.contains('pagination')) {
+            if (childElements.length > 0) {
               splitElements.push(parentElement);
             }
           });
