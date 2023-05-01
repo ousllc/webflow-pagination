@@ -38,24 +38,28 @@ function webflowPagination(options) {
           Array.from(parentElements).forEach((parentElement) => {
             const childElements = parentElement.querySelectorAll(childTag);
             if (childElements.length > 0) {
-              splitElements.push(parentElement);
+              splitElements.push(...childElements);
             }
           });
         } else {
           splitElements = contentContainer.querySelectorAll(tag);
         }
 
-        Array.from(splitElements).forEach((splitElement) => {
+        splitElements.forEach((splitElement, index) => {
           if (tempContainer.children.length) {
             contentParts.push(tempContainer.innerHTML);
             tempContainer = document.createElement('div');
           }
+          splitElement.remove();
           tempContainer.appendChild(splitElement.cloneNode(true));
+          if (index === splitElements.length - 1) {
+            contentParts.push(tempContainer.innerHTML);
+          }
         });
-        contentParts.push(tempContainer.innerHTML);
 
         return contentParts;
       }
+
 
       // 分割されたコンテンツを取得
       const contentParts = splitContentByTag(settings.splitTag, settings.child);
