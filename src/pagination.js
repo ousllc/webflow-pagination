@@ -65,12 +65,6 @@ function webflowPagination(options) {
       // 分割されたコンテンツを取得
       const contentParts = splitContentByTag(settings.splitTag, settings.child);
 
-      // splitTagが存在しない場合、ページネーションを非表示にする
-      if (contentParts.length <= 1) {
-        document.querySelector(settings.paginationContainerSelector).style.display = 'none';
-        return;
-      }
-
       // 分割されたコンテンツを表示
       contentContainer.innerHTML = contentParts[currentPage - 1] || '';
 
@@ -103,6 +97,7 @@ function webflowPagination(options) {
 
       // ページネーションHTMLを生成
       const totalPages = contentParts.length;
+
       let paginationHtml = createPagination(totalPages, parseInt(currentPage));
 
       // ページネーシーションHTMLを挿入
@@ -125,6 +120,13 @@ function webflowPagination(options) {
           paginationContainer.innerHTML = paginationHtml;
         }
       });
+
+      // splitTagが存在しない場合、ページネーションを非表示にする
+      if (contentParts.length <= 1) {
+        document.querySelector(settings.paginationContainerSelector).style.display = 'none';
+        return;
+      }
+
     }
   });
 }
