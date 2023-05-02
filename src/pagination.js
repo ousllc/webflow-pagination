@@ -5,14 +5,14 @@ function webflowPagination(options) {
       splitTag: 'h3',
       contentContainerSelector: '.rich-text-content',
       paginationContainerSelector: '.pagination-container',
-      prevLinkClass: '.pagination-prev',
-      countLinkClass: '.pagination-count',
-      countLinkTextClass: '.pagination-count-text',
-      nextLinkClass: '.pagination-next',
+      prevLinkClass: 'pagination-prev',
+      countLinkClass: 'pagination-count',
+      countLinkTextClass: 'pagination-count-text',
+      nextLinkClass: 'pagination-next',
       prevText: '前へ',
       nextText: '次へ',
-      currentPageLinkClass: '.active',
-      btnLinkTextClass: '.pagination-btn-text',
+      currentPageLinkClass: 'active',
+      btnLinkTextClass: 'pagination-btn-text',
       child: false
     };
 
@@ -30,42 +30,27 @@ function webflowPagination(options) {
       function splitContentByTag(tag, child) {
         const contentParts = [];
         let tempContainer = document.createElement('div');
+        let splitElements = contentContainer.querySelectorAll(tag);
 
-        if (tag) {
-          if (child && tag.indexOf(' ') > -1 && tag.split(' ').length === 2 && tag.split(' ')[1]) {
-            const [parentTag, childTag] = tag.split(' ');
-            const parentElements = contentContainer.querySelectorAll(parentTag);
-
-            Array.from(contentContainer.children).forEach((child) => {
-              if (child.tagName.toLowerCase() === parentTag && child.querySelector(childTag)) {
-                if (tempContainer.children.length) {
-                  contentParts.push(tempContainer.innerHTML);
-                  tempContainer = document.createElement('div');
-                }
-              }
-              tempContainer.appendChild(child.cloneNode(true));
-            });
-          } else {
-            Array.from(contentContainer.children).forEach((child) => {
-              if (child.tagName.toLowerCase() === tag) {
-                if (tempContainer.children.length) {
-                  contentParts.push(tempContainer.innerHTML);
-                  tempContainer = document.createElement('div');
-                }
-              }
-              tempContainer.appendChild(child.cloneNode(true));
-            });
-          }
-        } else {
-          contentParts.push(contentContainer.innerHTML);
-          const paginationContainer = document.querySelector(settings.paginationContainerSelector);
-          paginationContainer.parentNode.removeChild(paginationContainer);
+        if (splitElements.length === 0) {
+          document.querySelector(settings.paginationContainerSelector).style.display = 'none';
+          return contentParts;
         }
 
+        Array.from(splitElements).forEach((splitElement) => {
+          if (!child || splitElement.parentElement === contentContainer) {
+            if (tempContainer.children.length) {
+              contentParts.push(tempContainer.innerHTML);
+              tempContainer = document.createElement('div');
+            }
+            tempContainer.appendChild(splitElement.cloneNode(true));
+          }
+        });
         contentParts.push(tempContainer.innerHTML);
 
         return contentParts;
       }
+
 
       // 分割されたコンテンツを取得
       const contentParts = splitContentByTag(settings.splitTag, settings.child);
