@@ -5,14 +5,14 @@ function webflowPagination(options) {
       splitTag: 'h3',
       contentContainerSelector: '.rich-text-content',
       paginationContainerSelector: '.pagination-container',
-      prevLinkClass: 'pagination-prev',
-      countLinkClass: 'pagination-count',
-      countLinkTextClass: 'pagination-count-text',
-      nextLinkClass: 'pagination-next',
+      prevLinkClass: '.pagination-prev',
+      countLinkClass: '.pagination-count',
+      countLinkTextClass: '.pagination-count-text',
+      nextLinkClass: '.pagination-next',
       prevText: '前へ',
       nextText: '次へ',
-      currentPageLinkClass: 'active',
-      btnLinkTextClass: 'pagination-btn-text',
+      currentPageLinkClass: '.active',
+      btnLinkTextClass: '.pagination-btn-text',
       child: false
     };
 
@@ -31,36 +31,41 @@ function webflowPagination(options) {
         const contentParts = [];
         let tempContainer = document.createElement('div');
 
-        if (child && tag.indexOf(' ') > -1 && tag.split(' ').length === 2 && tag.split(' ')[1]) {
-          const [parentTag, childTag] = tag.split(' ');
-          const parentElements = contentContainer.querySelectorAll(parentTag);
+        if (tag) {
+          if (child && tag.indexOf(' ') > -1 && tag.split(' ').length === 2 && tag.split(' ')[1]) {
+            const [parentTag, childTag] = tag.split(' ');
+            const parentElements = contentContainer.querySelectorAll(parentTag);
 
-          Array.from(contentContainer.children).forEach((child) => {
-            if (child.tagName.toLowerCase() === parentTag && child.querySelector(childTag)) {
-              if (tempContainer.children.length) {
-                contentParts.push(tempContainer.innerHTML);
-                tempContainer = document.createElement('div');
+            Array.from(contentContainer.children).forEach((child) => {
+              if (child.tagName.toLowerCase() === parentTag && child.querySelector(childTag)) {
+                if (tempContainer.children.length) {
+                  contentParts.push(tempContainer.innerHTML);
+                  tempContainer = document.createElement('div');
+                }
               }
-            }
-            tempContainer.appendChild(child.cloneNode(true));
-          });
+              tempContainer.appendChild(child.cloneNode(true));
+            });
+          } else {
+            Array.from(contentContainer.children).forEach((child) => {
+              if (child.tagName.toLowerCase() === tag) {
+                if (tempContainer.children.length) {
+                  contentParts.push(tempContainer.innerHTML);
+                  tempContainer = document.createElement('div');
+                }
+              }
+              tempContainer.appendChild(child.cloneNode(true));
+            });
+          }
         } else {
-          Array.from(contentContainer.children).forEach((child) => {
-            if (child.tagName.toLowerCase() === tag) {
-              if (tempContainer.children.length) {
-                contentParts.push(tempContainer.innerHTML);
-                tempContainer = document.createElement('div');
-              }
-            }
-            tempContainer.appendChild(child.cloneNode(true));
-          });
+          contentParts.push(contentContainer.innerHTML);
+          const paginationContainer = document.querySelector(settings.paginationContainerSelector);
+          paginationContainer.parentNode.removeChild(paginationContainer);
         }
 
         contentParts.push(tempContainer.innerHTML);
 
         return contentParts;
       }
-
 
       // 分割されたコンテンツを取得
       const contentParts = splitContentByTag(settings.splitTag, settings.child);
